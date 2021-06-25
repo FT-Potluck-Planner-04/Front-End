@@ -1,20 +1,31 @@
 import React, { useState} from "react";
 import "../App.css";
-const Register = ()=> {
-    const [values, setFormValues] = useState({
+import { useHistory } from 'react-router'
+import axios from 'axios'
+const initialValues = {
     name:"",
     email:"",
     password:""
-});
+};
+const Register = ()=> {
+    const { push } = useHistory();
+    const [values, setFormValues] = useState(initialValues);
 const handleChange = (e) => {
 
     setFormValues({...values, [e.target.name]: e.target.value})
   }
  const handleFormSubmit = (e) => {
         e.preventDefault();
-
-    }
-
+        axios.put("https:potluck-planner-back-end.herokuapp.com/api/auth/register",values)
+        .then(res => {
+            localStorage.setItem("token", res.data.payload);
+            push("/Login")
+           
+        })
+        .catch(err => {
+            console.log(err)
+        })
+     }
     return(
         <div className="container">
             <div className="wrapper">
@@ -23,7 +34,7 @@ const handleChange = (e) => {
         </div>
         <form className="form-wrapper">
             <div className="name">
-            <label className="label">Full Name</label>
+            <label className="label">Username</label>
             <input className="input" 
             type="type"
             name="name"
@@ -52,7 +63,7 @@ const handleChange = (e) => {
               />
              </div> 
              <div>
-                 <button className="submitBtn" onClick={handleFormSubmit}>
+                 <button className="submitBtn" onSubmit={handleFormSubmit}>
                      Register
                  </button>
              </div>

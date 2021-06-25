@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {  useState } from "react";
 import { useHistory } from 'react-router'
-
+import "../App.css";
 const initialValues = { username:"", password:""};
 
 const Login = () => {
@@ -18,6 +18,7 @@ const Login = () => {
     .then(res => {
         localStorage.setItem("token", res.data.payload);
         push("/pots")
+        console.log(res.data)
     })
     .catch(err => {
         console.log(err)
@@ -27,7 +28,7 @@ const Login = () => {
 
  return(
      <div className="login-form">
-         <form onSubmit={handleSubmit}>
+         <form onSubmit={handleSubmit} className="wrapper">
             <label htmlFor="username">Username</label>
             <input className="username"
             id="username"
